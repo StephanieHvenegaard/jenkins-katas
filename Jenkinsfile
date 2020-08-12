@@ -47,6 +47,7 @@ pipeline {
     stage('Push to docker') {
       environment {
         DOCKERCREDS = credentials('docker_login') //use the credentials just created in this stage
+        docker_username = 'stephanienight'
       }
       steps {
         unstash 'code' //unstash the repository code
