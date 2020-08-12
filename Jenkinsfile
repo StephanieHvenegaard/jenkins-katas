@@ -13,6 +13,7 @@ pipeline {
     stage('Parallel execution') {
       parallel {
       stage('Master branch build') {
+          agent any
           when { branch "master" }
           steps {
             sh 'Echo "On master branch"'
