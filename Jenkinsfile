@@ -1,4 +1,7 @@
 pipeline {
+  environment {
+    docker_username = 'stephanienight'
+  }
   agent any
   stages {
     stage('Clone Down') {
@@ -20,11 +23,14 @@ pipeline {
             docker {
               image 'gradle:jdk11'
             }
-
           }
-          steps {
-            skipDefaultCheckout true
+          steps {     
+            unstash 'code'       
             sh 'ci/build-app.sh'
+            stash(name: 'code', excludes: '.git')
+          }
+          options{
+            skipDefaultCheckout()
           }
         }
 
@@ -47,13 +53,14 @@ pipeline {
     stage('Push to docker') {
       environment {
         DOCKERCREDS = credentials('docker_login') //use the credentials just created in this stage
-        docker_username = 'stephanienight'
+      
       }
       steps {
         unstash 'code' //unstash the repository code
         sh 'ci/build-docker.sh'
         sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin' //login to docker hub with the credentials above
         sh 'ci/push-docker.sh'
+
       }
     }    
   }
