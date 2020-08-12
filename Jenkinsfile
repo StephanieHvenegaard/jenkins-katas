@@ -29,17 +29,20 @@ pipeline {
 
           }
           steps {
+            skipDefaultCheckout true
             sh 'ci/build-app.sh'
           }
         }
 
         stage('Test app') {
           steps {
+            unstash 'code'
             sh 'ci/unit-test-app.sh'
           }
         }
 
       }
     }
+
   }
 }
