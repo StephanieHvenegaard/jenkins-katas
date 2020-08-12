@@ -29,6 +29,12 @@ pipeline {
         }
 
         stage('Test app') {
+          agent {
+            docker {
+              image 'gradle:jdk11'
+            }
+
+          }
           steps {
             unstash 'code'
             sh 'ci/unit-test-app.sh'
