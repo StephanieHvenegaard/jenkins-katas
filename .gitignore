@@ -26,3 +26,5 @@ complete/bin
 .gradle/*
 app/bin/
 .vscode/settings.json
+
+Jenkinsfile-old

@@ -12,9 +12,10 @@ pipeline {
 
     stage('Parallel execution') {
       parallel {
-        stage('Say hello') {
+      stage('Master branch build') {
+          when { branch "master" }
           steps {
-            sh 'echo Hello world i wanna die.'
+            sh 'Echo "On master branch"'
           }
         }
 
