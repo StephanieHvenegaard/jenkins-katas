@@ -12,15 +12,7 @@ pipeline {
 
     stage('Parallel execution') {
       parallel {
-      stage('Master branch build') {
-          agent any
-          when { branch "master" }
-          steps {
-            sh 'Echo "On master branch"'
-          }
-        }
-
-        stage('Build App') {
+          stage('Build App') {
           agent {
             docker {
               image 'gradle:jdk11'
@@ -53,6 +45,7 @@ pipeline {
       }
     }
     stage('Push to docker') {
+      when { branch "master" }
       environment {
         DOCKERCREDS = credentials('docker_login') //use the credentials just created in this stage
       
